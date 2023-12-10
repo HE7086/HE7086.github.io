@@ -3,4 +3,14 @@ authors = ["HE7086"]
 language = "en"
 multilingual = false
 src = "src"
-title = "Blog"
+title = "HE7086"
+
+[output.html]
+git-repository-url = "https://github.com/HE7086/HE7086.github.io"
+cname = "blog.heyi7086.com"
+
+[output.html.print]
+enable = false
+
+[output.html.playground]
+runnable = false
