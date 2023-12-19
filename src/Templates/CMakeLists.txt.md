@@ -28,6 +28,8 @@ add_compile_options("$<$<CONFIG:DEBUG>:-fsanitize=address;-fsanitize=undefined;-
 
 # enable lto for release build
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE true)
+# enable strip for release build
+add_link_options($<$<CONFIG:RELEASE>:-s>)
 
 # -fPIC
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
