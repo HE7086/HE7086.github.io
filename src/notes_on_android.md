@@ -57,6 +57,7 @@ This error message means that the content in `boot_a` is modified.
 
 This can be fixed by flash stock boot.img (or any corresponding partition)
 ```shell
+adb reboot bootloader
 fastboot flash boot_a boot.img
 ```
 

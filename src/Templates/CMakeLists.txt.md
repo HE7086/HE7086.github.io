@@ -22,6 +22,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 # enable warnings by default for all targets
 add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+# when use other languages like cuda, flags might not be compatible
+# add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-Wall;-Wextra;-Wpedantic;-Werror>")
 
 # enable sanitizers for debug build
 add_compile_options("$<$<CONFIG:DEBUG>:-fsanitize=address;-fsanitize=undefined;-fno-omit-frame-pointer>")
@@ -29,7 +31,7 @@ add_compile_options("$<$<CONFIG:DEBUG>:-fsanitize=address;-fsanitize=undefined;-
 # enable lto for release build
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE true)
 # enable strip for release build
-add_link_options($<$<CONFIG:RELEASE>:-s>)
+add_link_options("$<$<CONFIG:RELEASE>:-s>")
 
 # -fPIC
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
