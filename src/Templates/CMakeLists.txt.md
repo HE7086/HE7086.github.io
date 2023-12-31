@@ -1,5 +1,12 @@
 # CMakeLists.txt
 
+## invoke
+```shell
+    cmake -B build -G "Ninja Multi-Config"
+    cmake --build build --config Release
+    cmake --install build --config Release --prefix .
+```
+
 ## normal
 ```cmake
 cmake_minimum_required(VERSION 3.20)
@@ -29,6 +36,8 @@ add_compile_options("$<$<CONFIG:DEBUG>:-fsanitize=address;-fsanitize=undefined;-
 
 # enable lto for release build
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE true)
+# force fat lto objects
+set(CMAKE_CXX_COMPILE_OPTIONS_IPO -flto=auto -ffat-lto-objects)
 # enable strip for release build
 add_link_options("$<$<CONFIG:RELEASE>:-s>")
 # -fPIC
@@ -45,6 +54,7 @@ add_library(lib1 STATIC lib1.cpp)
 
 # shared library
 add_library(lib2 SHARED lib2.cpp)
+install(TARGETS lib1 lib2 DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 
 # executable
 add_executable(exe1 main.cpp)
@@ -63,6 +73,7 @@ target_compile_definitions(exe1 PRIVATE
     PATCH_VERSION=1
     BUILD_DEBUG
     )
+install(TARGETS exe1 DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
 # child targets, should contain CMakeLists.txt
 add_subdirectory(examples)
@@ -70,23 +81,13 @@ add_subdirectory(examples)
 
 ## cuda
 ```cmake
-cmake_minimum_required(VERSION 3.24)
-project(example_cuda)
-
-set(CMAKE_COLOR_DIAGNOSTICS ON)
-
-# Common Options
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# cuda
 set(CMAKE_CUDA_STANDARD 20)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 set(CMAKE_CUDA_ARCHITECTURES native)
 enable_language(CUDA)
 find_package(CUDAToolkit REQUIRED)
 
+add_compile_options("$<$<COMPILE_LANGUAGE:CUDA>:-Werror=all-warnings>")
 add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-Wall;-Wextra;-Wpedantic;-Werror>")
 
 add_executable(examle_cuda
@@ -119,5 +120,5 @@ BISON_TARGET(PARSER parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp)
 add_flex_bison_dependency(SCAN PARSE)
 
 add_executable(exe1 main.cpp ${FLEX_SCAN_OUTPUTS} ${BISON_PARSE_OUTPUTS})
-target_link_libraries(exe1 PRIVATE lib1 lib2 Threads::Threads ${FLEX_LIBRARIES})
+target_link_libraries(exe1 PRIVATE ${FLEX_LIBRARIES})
 ```
