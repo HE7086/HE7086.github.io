@@ -2,9 +2,9 @@
 
 ## invoke
 ```shell
-    cmake -B build -G "Ninja Multi-Config"
-    cmake --build build --config Release
-    cmake --install build --config Release --prefix .
+cmake -B build -G "Ninja Multi-Config"
+cmake --build build --config Release
+cmake --install build --config Release --prefix .
 ```
 
 ## normal

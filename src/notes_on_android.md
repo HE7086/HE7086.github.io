@@ -67,12 +67,16 @@ fastboot flash boot_a boot.img
 for tag in $(gh api repos/arter97/nothing_archive/releases | jq -r '.[].tag_name'); do
     mkdir -p "$tag"
     pushd "$tag"
-    gh release download "$tag" -R arter97/nothing_archive -p 'boot.img.zip' -O- | bsdtar -xf-
+    # gh release download "$tag" -R arter97/nothing_archive -p 'boot.img.zip' -O- | bsdtar -xf-
+    gh release download "$tag" -R arter97/nothing_archive -p 'Pong_*-image.7z'
+    bsdtar -xf Pong_*-image.7z boot.img
     popd
     sha256sum "$tag/boot.img"
 done
 ```
 Or, just the latest one
 ```shell
-gh release download -R arter97/nothing_archive -p 'boot.img.zip'
+# gh release download -R arter97/nothing_archive -p 'boot.img.zip'
+gh release download -R arter97/nothing_archive -p 'Pong_*-image.7z'
+bsdtar -xf Pong_*-image.7z boot.img
 ```
