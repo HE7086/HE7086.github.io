@@ -4,7 +4,7 @@
 ```shell
 cmake -B build -G "Ninja Multi-Config"
 cmake --build build --config Release
-cmake --install build --config Release --prefix .
+CMAKE_INSTALL_MODE=SYMLINK_OR_COPY cmake --install build --config Release --prefix .
 ```
 
 ## normal
