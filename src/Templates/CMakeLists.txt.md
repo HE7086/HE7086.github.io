@@ -16,11 +16,12 @@ if (NOT UNIX)
     message(FATAL_ERROR "Unsupported OS")
 endif()
 
-# Common Options
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_COLOR_DIAGNOSTICS ON)
+# list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-# list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # save the executables/libraries according to GNU standard
 include(GNUInstallDirs)
@@ -83,7 +84,10 @@ add_subdirectory(examples)
 ```cmake
 set(CMAKE_CUDA_STANDARD 20)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-set(CMAKE_CUDA_ARCHITECTURES native)
+if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+# -DCMAKE_CUDA_ARCHITECTURES=all-major
+    set(CMAKE_CUDA_ARCHITECTURES native)
+endif()
 enable_language(CUDA)
 find_package(CUDAToolkit REQUIRED)
 
