@@ -60,3 +60,32 @@ clean:
 purge:
 	rm -rf $(OUT)
 ```
+
+## c++
+```makefile
+CXXFLAGS ?= -std=c++23 -march=x86-64 -O2 -flto=auto -ffat-lto-objects -s \
+			-fPIC -fstack-clash-protection -fcf-protection
+CPPFLAGS ?= -Wp,-D_FORTIFY_SOURCE=2,-D_GLIBCXX_ASSERTIONS
+LDFLAGS ?= -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now
+LDLIBS ?= -lstdc++
+
+PREFIX ?= /usr/local
+
+SOURCES := $(wildcard *.cpp)
+OBJECTS := $(SOURCES:.cpp=.o)
+EXECUTABLE := name_of_exe
+
+all: $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+$(OBJECTS): %o: %cpp
+
+install: $(EXECUTABLE)
+	install -Dm755 $^ $(PREFIX)/bin/$^
+
+.PHONY: clean
+clean:
+	$(RM) $(EXECUTABLE) *.o
+```
+
+* use mold: `LD_FLAGS += -fuse-ld=mold`
