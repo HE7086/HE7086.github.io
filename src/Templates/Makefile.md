@@ -63,8 +63,11 @@ purge:
 
 ## c++
 ```makefile
-CXXFLAGS ?= -std=c++23 -march=x86-64 -O2 -flto=auto -ffat-lto-objects -s \
-			-fPIC -fstack-clash-protection -fcf-protection
+LTOFLAGS ?= -flto=auto -ffat-lto-objects 
+CXXFLAGS ?= -std=c++23 -march=x86-64 -O2 -s -fno-plt -pipe \
+			-fPIC -fstack-clash-protection -fcf-protection \
+			-Wall -Wextra -Wpedantic -Werror \
+			$(LTOFLAGS)
 CPPFLAGS ?= -Wp,-D_FORTIFY_SOURCE=2,-D_GLIBCXX_ASSERTIONS
 LDFLAGS ?= -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now
 LDLIBS ?= -lstdc++
