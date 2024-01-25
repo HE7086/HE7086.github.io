@@ -64,7 +64,7 @@ purge:
 ## c++
 ```makefile
 LTOFLAGS ?= -flto=auto -ffat-lto-objects 
-CXXFLAGS ?= -std=c++23 -march=x86-64 -O2 -s -fno-plt -pipe \
+CXXFLAGS ?= -std=c++23 -march=x86-64 -O2 -fno-plt -pipe \
 			-fPIC -fstack-clash-protection -fcf-protection \
 			-Wall -Wextra -Wpedantic -Werror \
 			$(LTOFLAGS)
@@ -76,19 +76,27 @@ PREFIX ?= /usr/local
 
 SOURCES := $(wildcard *.cpp)
 OBJECTS := $(SOURCES:.cpp=.o)
-EXECUTABLE := name_of_exe
+EXE := main
 
-all: $(EXECUTABLE)
+all: $(EXE)
 
-$(EXECUTABLE): $(OBJECTS)
+$(EXE): $(OBJECTS)
 $(OBJECTS): %o: %cpp
 
-install: $(EXECUTABLE)
-	install -Dm755 $^ $(PREFIX)/bin/$^
+install: $(EXE)
+	install -s -Dm755 $^ $(PREFIX)/bin/$^
 
 .PHONY: clean
 clean:
-	$(RM) $(EXECUTABLE) *.o
+	$(RM) $(EXE) *.o
 ```
 
 * use mold: `LD_FLAGS += -fuse-ld=mold`
+* generate compile_commands.json from Makefile
+```
+make -Bn \
+    | grep -wE 'gcc|g\+\+|c\+\+' \
+    | grep -w '\-c' \
+    | jq -nR "[inputs|{directory:\"$PWD\", command:., file: match(\" [^ ]+$\").string[1:]}]" \
+    > compile_commands.json
+```
