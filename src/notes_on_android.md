@@ -80,3 +80,15 @@ Or, just the latest one
 gh release download -R arter97/nothing_archive -p 'Pong_*-image.7z'
 bsdtar -xf Pong_*-image.7z boot.img
 ```
+
+### modify default url for testing network availability
+```shell
+# run in adb or termux root shell
+# get current url, null means unchanged
+settings get global captive_portal_http_url
+settings get global captive_portal_https_url
+
+# set url to e.g. miui.com
+settings put global captive_portal_http_url http://connect.rom.miui.com/generate_204
+settings put global captive_portal_https_url http://connect.rom.miui.com/generate_204
+```
