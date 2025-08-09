@@ -11,3 +11,6 @@
 - [CMakeLists.txt](./Templates/CMakeLists.txt.md)
 - [Makefile](./Templates/Makefile.md)
 - [flake.nix](./Templates/flake.nix.md)
+
+# Coding
+- [String as NTTP](./string_as_nttp.md)
