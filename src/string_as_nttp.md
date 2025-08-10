@@ -16,14 +16,11 @@ struct FixedString {
   consteval FixedString(CharT const (&str)[N]) noexcept {
     std::copy_n(str, N, data.begin());
   }
-  constexpr CharT const* c_str() const noexcept {
-    return data.data();
-  }
-  constexpr std::basic_string_view<CharT> view() const noexcept {
-    return {data.data(), N - 1};
-  }
   constexpr operator std::basic_string_view<CharT>() const noexcept {
     return {data.data(), N - 1};
+  }
+  constexpr operator CharT const*() const noexcept {
+    return data.data();
   }
 };
 template <size_t N, typename CharT>
@@ -47,7 +44,7 @@ template <fixed_string S>
 class foo {
 public:
   foo() {
-    std::println("{}", S.c_str());
+    std::println("{}", S);
   }
   ~foo() {
     std::println("{}", S);
