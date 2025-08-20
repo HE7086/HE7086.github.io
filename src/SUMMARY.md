@@ -14,3 +14,4 @@
 
 # Coding
 - [String as NTTP](./string_as_nttp.md)
+- [fmt::join](./join_view.md)
